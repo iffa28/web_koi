@@ -9,6 +9,10 @@ class Product extends Model
 {
     use HasFactory;
 
+    protected $primaryKey = 'kode_produk';
+    public $incrementing = false; // jika kode_produk bukan auto increment
+    protected $keyType = 'string';
+
     protected $fillable = [
         'kode_produk',
         'nama_produk',
@@ -21,9 +25,13 @@ class Product extends Model
     /**
      * Relasi: produk bisa muncul dalam banyak transaksi (opsional)
      */
-    public function transaksis()
+    public function transaksi()
     {
         return $this->hasMany(Transaksi::class, 'kode_produk', 'kode_produk');
     }
 
+    public function getRouteKeyName()
+    {
+        return 'kode_produk';
+    }
 }

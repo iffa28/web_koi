@@ -15,7 +15,18 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
+                    @can('admin')
+                        <x-nav-link :href="route('product.index')" :active="request()->routeIs('product.index')">
+                            {{ __(' Manajemen Produk') }}
+                        </x-nav-link>
+                    @endcan
+                    @can('admin')
+                        <x-nav-link :href="route('user.index')" :active="request()->routeIs('user.index')">
+                            {{ __('Manajemen Pengguna') }}
+                        </x-nav-link>
+                    @endcan
                 </div>
+
             </div>
 
             <!-- Settings Dropdown -->
@@ -78,6 +89,16 @@
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('product.index')" :active="request()->routeIs('product.index')">
+                {{ __('Manajemen Produk') }}
+            </x-responsive-nav-link>
+
+            <x-responsive-nav-link :href="route('user.index')" :active="request()->routeIs('user.index')">
+                {{ __('Manajemen Pengguna') }}
+            </x-responsive-nav-link>
+
+
+
         </div>
 
         <!-- Responsive Settings Options -->
