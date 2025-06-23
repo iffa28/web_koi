@@ -21,16 +21,6 @@
                     <x-nav-link :href="route('cart.index')" :active="request()->routeIs('cart.index')">
                         {{ __('Keranjang') }}
                     </x-nav-link>
-                    @can('admin')
-                        <x-nav-link :href="route('product.index')" :active="request()->routeIs('product.index')">
-                            {{ __(' Manajemen Produk') }}
-                        </x-nav-link>
-                    @endcan
-                    @can('admin')
-                        <x-nav-link :href="route('user.index')" :active="request()->routeIs('user.index')">
-                            {{ __('Manajemen Pengguna') }}
-                        </x-nav-link>
-                    @endcan
                 </div>
 
             </div>
@@ -100,13 +90,6 @@
             </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('cart.index')" :active="request()->routeIs('cart.index')">
                 {{ __('Keranjang') }}
-            </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('product.index')" :active="request()->routeIs('product.index')">
-                {{ __('Manajemen Produk') }}
-            </x-responsive-nav-link>
-
-            <x-responsive-nav-link :href="route('user.index')" :active="request()->routeIs('user.index')">
-                {{ __('Manajemen Pengguna') }}
             </x-responsive-nav-link>
 
 

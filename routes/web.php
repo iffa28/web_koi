@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminPesananController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
@@ -39,6 +40,8 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::delete('/product/{product}', [ProductController::class, 'destroy'])->name('product.destroy');
     Route::get('/product/{product:kode_produk}/json', [ProductController::class, 'showJson'])->name('product.showJson');
     Route::post('/product/{product:kode_produk}', [ProductController::class, 'update'])->name('product.update');
+
+    Route::get('/adminPesanan', [AdminPesananController::class, 'index'])->name('adminPesanan.index');
 });
 
 require __DIR__ . '/auth.php';

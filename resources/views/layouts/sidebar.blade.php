@@ -48,6 +48,19 @@
                         </x-side-nav-link>
                     </div>
                 </li>
+                <li>
+                    <div :class="{ 'flex justify-center': sidebarCollapsed }">
+                        <x-side-nav-link :href="route('adminPesanan.index')" :active="request()->routeIs('adminPesanan.index')">
+                            <svg class="w-6 h-6 flex-shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-4.67c.62.91 1.074 1.96 1.074 3.071v.003z" />
+                            </svg>
+                            <span class="ml-3 whitespace-nowrap"
+                                :class="{ 'opacity-0': sidebarCollapsed }">{{ __('Pesanan') }}</span>
+                        </x-side-nav-link>
+                    </div>
+                </li>
             @endcan
         </ul>
     </nav>
@@ -86,6 +99,12 @@
                         <x-side-nav-link :href="route('user.index')" :active="request()->routeIs('user.index')">
                             <svg class="w-6 h-6 flex-shrink-0" ...></svg>
                             <span class="ml-3">{{ __('Manajemen Pengguna') }}</span>
+                        </x-side-nav-link>
+                    </li>
+                    <li>
+                        <x-side-nav-link :href="route('adminPesanan.index')" :active="request()->routeIs('adminPesanan.index')">
+                            <svg class="w-6 h-6 flex-shrink-0" ...></svg>
+                            <span class="ml-3">{{ __('Pesanan') }}</span>
                         </x-side-nav-link>
                     </li>
                 @endcan
