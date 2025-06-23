@@ -2,9 +2,72 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Product;
+use App\Models\Transaksi;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class TransaksiController extends Controller
 {
-    //
+    public function store(Request $request)
+    {
+        $request->validate([
+            'kode_produk' => 'required|exists:products,kode_produk',
+            'qty' => 'required|integer|min:1',
+        ]);
+
+        $product = Product::where('kode_produk', $request->kode_produk)->firstOrFail();
+
+        // Cek apakah qty melebihi stok
+        if ($request->qty > $product->stok) {
+            return back()->withErrors(['qty' => 'Jumlah melebihi stok yang tersedia.']);
+        }
+
+        $total_harga = $product->harga_satuan * $request->qty;
+
+        // Buat transaksi
+        $transaksi = Transaksi::create([
+            'user_id' => Auth::id(),
+            'kode_produk' => $product->kode_produk,
+            'nama_produk' => $product->nama_produk,
+            'berat' => $product->berat,
+            'qty' => $request->qty,
+            'total_harga' => $total_harga,
+            'status' => 'belum dibayar',
+        ]);
+
+        // Kurangi stok produk
+        $product->stok -= $request->qty;
+        $product->save();
+
+        return redirect()->route('cart.index')->with('success', 'Produk berhasil ditambahkan ke keranjang.');
+    }
+
+    public function destroy(Transaksi $transaksi)
+    {
+        if ($transaksi->status !== 'belum dibayar') {
+            return redirect()->route('cart.index')->with('error', 'Hanya transaksi yang belum dibayar yang dapat dihapus.');
+        }
+
+        DB::beginTransaction();
+
+        try {
+            // Kembalikan stok produk
+            $product = Product::where('kode_produk', $transaksi->kode_produk)->firstOrFail();
+            $product->stok += $transaksi->qty;
+            $product->save();
+
+            // Hapus transaksi
+            $transaksi->delete();
+
+            DB::commit();
+
+            return redirect()->route('cart.index')->with('success', 'Transaksi berhasil dihapus dan stok dikembalikan.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return redirect()->route('cart.index')->with('error', 'Terjadi kesalahan saat menghapus transaksi.');
+        }
+    }
 }

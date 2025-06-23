@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\TransaksiController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -20,6 +22,11 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/listproduct', [ProductController::class, 'listproduct'])->name('product.listproduct');
     Route::get('/produk/{kode_produk}/gambar', [ProductController::class, 'showImage'])->name('product.image');
+
+    Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+    Route::post('/transaction', [TransaksiController::class, 'store'])->name('transaksi.store');
+    Route::delete('/cart/{transaksi}', [TransaksiController::class, 'destroy'])->name('transaksi.destroy');
+
 });
 
 // update data remove and make admin

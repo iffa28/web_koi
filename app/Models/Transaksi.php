@@ -9,12 +9,31 @@ class Transaksi extends Model
 {
     use HasFactory;
 
+    // Menyesuaikan nama tabel karena model bernama "Transaksi", tetapi tabelnya "transactions"
+    protected $table = 'transactions';
+
+    // Kolom yang bisa diisi secara massal
     protected $fillable = [
+        'user_id',
         'kode_produk',
-        'nama_produk',
-        'berat',
-        'stok',
-        'harga_satuan',
-        'gambar',
+        'qty',
+        'total_harga',
+        'status',
     ];
+
+    /**
+     * Relasi ke Produk
+     */
+    public function produk()
+    {
+        return $this->belongsTo(Product::class, 'kode_produk', 'kode_produk');
+    }
+
+    /**
+     * Relasi ke User
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

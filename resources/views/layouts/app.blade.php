@@ -10,6 +10,8 @@
 
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
@@ -24,10 +26,8 @@
         {{-- Sidebar untuk admin --}}
         @if ($role === 'admin')
             {{-- Sidebar desktop --}}
-            <div 
-                class="hidden md:flex transition-all duration-300 ease-in-out" 
-                :class="{'w-64': !sidebarCollapsed, 'w-7': sidebarCollapsed}"
-            >
+            <div class="hidden md:flex transition-all duration-300 ease-in-out"
+                :class="{ 'w-64': !sidebarCollapsed, 'w-7': sidebarCollapsed }">
                 @include('layouts.sidebar')
             </div>
 
