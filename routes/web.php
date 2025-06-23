@@ -17,6 +17,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    Route::get('/listproduct', [ProductController::class, 'listproduct'])->name('product.listproduct');
+    Route::get('/produk/{kode_produk}/gambar', [ProductController::class, 'showImage'])->name('product.image');
 });
 
 // update data remove and make admin
@@ -27,7 +30,8 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/product', [ProductController::class, 'index'])->name('product.index');
     Route::post('/products', [ProductController::class, 'store'])->name('product.store');
     Route::delete('/product/{product}', [ProductController::class, 'destroy'])->name('product.destroy');
-    Route::get('/produk/{kode_produk}/gambar', [ProductController::class, 'showImage'])->name('product.image');
+    Route::get('/product/{product:kode_produk}/json', [ProductController::class, 'showJson'])->name('product.showJson');
+    Route::post('/product/{product:kode_produk}', [ProductController::class, 'update'])->name('product.update');
 });
 
 require __DIR__ . '/auth.php';

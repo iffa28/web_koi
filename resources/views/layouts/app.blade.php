@@ -24,7 +24,10 @@
         {{-- Sidebar untuk admin --}}
         @if ($role === 'admin')
             {{-- Sidebar desktop --}}
-            <div class="hidden md:flex">
+            <div 
+                class="hidden md:flex transition-all duration-300 ease-in-out" 
+                :class="{'w-64': !sidebarCollapsed, 'w-7': sidebarCollapsed}"
+            >
                 @include('layouts.sidebar')
             </div>
 
@@ -49,23 +52,48 @@
 
         <div class="flex-1 flex flex-col overflow-hidden">
             @if (Auth::user()->role === 'admin')
-                <header class="flex justify-between items-center py-4 px-6 bg-white dark:bg-gray-800 border-b dark:border-gray-700">
+                <header
+                    class="flex justify-between items-center py-4 px-6 bg-white dark:bg-gray-800 border-b dark:border-gray-700">
                     <div class="flex items-center">
-                        <button @click.stop="sidebarOpen = !sidebarOpen" class="md:hidden text-gray-500 mr-4 focus:outline-none">
-                            <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" /></svg>
+                        {{-- Tombol Toggle Sidebar --}}
+                        <button @click="sidebarCollapsed = !sidebarCollapsed"
+                            class="hidden md:block text-gray-500 mr-4 focus:outline-none p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700">
+                            <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                            </svg>
+                        </button>
+                        {{-- Tombol Hamburger Mobile --}}
+                        <button @click.stop="sidebarOpen = !sidebarOpen"
+                            class="md:hidden text-gray-500 mr-4 focus:outline-none">
+                            <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M4 6h16M4 12h16M4 18h16" />
+                            </svg>
                         </button>
 
-                        <div class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-                            @if (isset($header))
-                                {{ $header }}
-                            @endif
-                        </div>
+                        {{-- Judul Halaman dari Slot --}}
+                        @if (isset($header))
+                            {{ $header }}
+                        @endif
                     </div>
 
+                    <div class="shrink-0 flex items-center">
+                        <a href="{{ route('dashboard') }}">
+                            <img src="{{ asset('/images/logo.png') }}" alt="Logo Toko Koi A3"
+                                class="w-10 h-10 object-contain">
+                        </a>
+                        {{ __('A3 KOI Farm') }}
+                    </div>
+
+
+                    {{-- Tombol Logout --}}
                     <div>
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
-                            <button type="submit" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg text-sm transition-colors">
+                            <button type="submit"
+                                class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg text-sm transition-colors">
                                 {{ __('Logout') }}
                             </button>
                         </form>

@@ -12,6 +12,7 @@ class Product extends Model
     protected $primaryKey = 'kode_produk';
     public $incrementing = false; // jika kode_produk bukan auto increment
     protected $keyType = 'string';
+    protected $hidden = ['gambar'];
 
     protected $fillable = [
         'kode_produk',

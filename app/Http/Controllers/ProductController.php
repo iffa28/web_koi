@@ -15,6 +15,16 @@ class ProductController extends Controller
 
         return view('product.index', compact('products'));
     }
+
+    public function listproduct()
+    {
+        $products = Product::orderBy('created_at', 'asc') // Urut berdasarkan tanggal dibuat
+            ->select('kode_produk', 'nama_produk', 'harga_satuan', 'gambar') // sertakan kode_produk untuk gambar
+            ->paginate(10);
+
+        return view('product.listproduct', compact('products'));
+    }
+
     public function store(Request $request)
     {
 
@@ -61,35 +71,48 @@ class ProductController extends Controller
 
         return response()->json([
             'message' => 'Produk berhasil ditambahkan',
-            'data' => $product
+            'data' => [
+                'kode_produk' => $product->kode_produk,
+                'nama_produk' => $product->nama_produk,
+                'harga_satuan' => $product->harga_satuan,
+                // jangan sertakan 'gambar'
+            ]
         ]);
     }
+    public function showJson(Product $product)
+    {
+        return response()->json($product);
+    }
 
+    /**
+     * Memproses update produk dari modal edit.
+     */
     public function update(Request $request, Product $product)
     {
+        if (Auth::user()->role !== 'admin') {
+            return response()->json(['message' => 'Hanya admin yang bisa mengubah produk'], 403);
+        }
+
         $request->validate([
-            'nama_produk' => 'required|max:255',
-            'berat' => 'required',
-            'stok' => 'required|integer',
-            'harga_satuan' => 'required|numeric',
-            'gambar' => 'nullable|image'
+            'nama_produk' => 'required|string|max:255',
+            'berat' => 'required|string|max:50',
+            'stok' => 'required|integer|min:0',
+            'harga_satuan' => 'required|numeric|min:0',
+            'gambar' => 'nullable|image|mimes:jpg,jpeg,png|max:2048', // gambar tidak wajib saat update
         ]);
 
-        $data = [
-            'nama_produk' => ucfirst($request->nama_produk),
-            'berat' => $request->berat,
-            'stok' => $request->stok,
-            'harga_satuan' => $request->harga_satuan,
-        ];
+        $data = $request->except('gambar');
 
         if ($request->hasFile('gambar')) {
-            $binaryImage = file_get_contents($request->file('gambar')->getRealPath());
-            $data['gambar'] = $binaryImage;
+            $data['gambar'] = file_get_contents($request->file('gambar')->getRealPath());
         }
 
         $product->update($data);
 
-        return redirect()->route('product.index')->with('success', 'Product updated successfully!');
+        return response()->json([
+            'message' => 'Produk berhasil diperbarui!',
+            'data' => $product
+        ]);
     }
 
     public function destroy(Product $product)

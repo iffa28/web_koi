@@ -15,6 +15,9 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('product.listproduct')" :active="request()->routeIs('product.listproduct')">
+                        {{ __('Katalog') }}
+                    </x-nav-link>
                     @can('admin')
                         <x-nav-link :href="route('product.index')" :active="request()->routeIs('product.index')">
                             {{ __(' Manajemen Produk') }}
@@ -88,6 +91,9 @@
         <div class="pt-2 pb-3 space-y-1">
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('product.listproduct')" :active="request()->routeIs('product.listproduct')">
+                {{ __('Katalog') }}
             </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('product.index')" :active="request()->routeIs('product.index')">
                 {{ __('Manajemen Produk') }}

@@ -27,7 +27,7 @@
                             <tr>
                                 <th
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                                    No</th>
+                                    Kode Produk</th>
                                 <th
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                                     Nama Produk</th>
@@ -52,7 +52,7 @@
                             @forelse ($products as $index => $product)
                                 <tr>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">
-                                        {{ $products->firstItem() + $index }}</td>
+                                        {{ $product->kode_produk }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">
                                         {{ $product->nama_produk }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">
@@ -72,8 +72,13 @@
                                         {{ $product->stok }}</td>
                                     <td
                                         class="px-6 py-4 whitespace-nowrap text-sm font-medium flex items-center space-x-2">
-                                        <a href="#"
-                                            class="text-white bg-yellow-500 hover:bg-yellow-600 px-3 py-1 rounded-md">Edit</a>
+                                        <button type="button" @click="
+                                            editModalOpen = true; 
+                                            fetch('{{ route('product.showJson', $product) }}')
+                                                .then(res => res.json())
+                                                .then(data => { editingProduct = data; });
+                                            editFormAction = '{{ route('product.update', $product) }}';
+                                        " class="text-white bg-yellow-500 hover:bg-yellow-600 px-3 py-1 rounded-md">Edit</button>
 
                                         {{-- Form hapus diberi id unik berdasarkan kode produk --}}
                                         <form id="delete-form-{{ $product->kode_produk }}"
@@ -104,6 +109,7 @@
                 </div>
 
                 @include('product.partials._add-modal')
+                @include('product.partials._edit-modal')
                 @include('product.partials._delete-modal')
 
             </div>
@@ -143,5 +149,32 @@
                         submitButton.innerText = 'Tambah';
                     });
             });
+            // Script BARU untuk form EDIT
+        document.getElementById('editProductForm')?.addEventListener('submit', function(event) {
+            event.preventDefault();
+            let form = event.target;
+            let formData = new FormData(form);
+            let actionUrl = form.closest('[x-data]').__x.$data.editFormAction; // Ambil URL dari state Alpine
+
+            fetch(actionUrl, {
+                method: 'POST', // Form method spoofing akan menangani ini sebagai PUT/PATCH
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                    'Accept': 'application/json',
+                },
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.message) {
+                    alert(data.message);
+                    location.reload();
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Terjadi kesalahan saat memperbarui produk.');
+            });
+        });
         </script>
 </x-app-layout>

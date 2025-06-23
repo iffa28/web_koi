@@ -19,6 +19,6 @@ class Admin
             return $next($request);
         }
 
-        return redirect()->route('product.listproduct'); // atau 'home' jika untuk customer
+        return redirect()->route('dashboard'); // atau 'home' jika untuk customer
     }
 }
