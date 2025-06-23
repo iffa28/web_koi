@@ -98,4 +98,17 @@ class ProductController extends Controller
         $product->delete();
         return redirect()->route('product.index')->with('success', 'Product deleted successfully!');
     }
+    public function showImage($kode_produk)
+    {
+        $product = Product::where('kode_produk', $kode_produk)->firstOrFail();
+
+        if ($product->gambar) {
+            // Mengembalikan response dengan data gambar dan header Content-Type yang benar
+            return response($product->gambar)->header('Content-Type', 'image/jpeg');
+        }
+
+        // Jika tidak ada gambar, kembalikan gambar placeholder atau 404
+        // Di sini kita kembalikan 404 Not Found
+        abort(404);
+    }
 }

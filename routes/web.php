@@ -27,6 +27,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/product', [ProductController::class, 'index'])->name('product.index');
     Route::post('/products', [ProductController::class, 'store'])->name('product.store');
     Route::delete('/product/{product}', [ProductController::class, 'destroy'])->name('product.destroy');
+    Route::get('/produk/{kode_produk}/gambar', [ProductController::class, 'showImage'])->name('product.image');
 });
 
 require __DIR__ . '/auth.php';
