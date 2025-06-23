@@ -26,7 +26,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
     Route::post('/transaction', [TransaksiController::class, 'store'])->name('transaksi.store');
     Route::delete('/cart/{transaksi}', [TransaksiController::class, 'destroy'])->name('transaksi.destroy');
-
+    Route::post('/listproduct/savetransaksi', [TransaksiController::class, 'storeTransaksi'])->name('transaksi.storeTransaksi');
 });
 
 // update data remove and make admin

@@ -1,5 +1,10 @@
+@php
+    $showModal = request('show_checkout_modal') == '1' ? 'true' : 'false';
+@endphp
+
+
 <x-app-layout>
-    <div x-data="{ openModal: false, selectedProduct: {}, qty: 1, total: 0 }" class="bg-blue-900 min-h-screen py-12">
+    <div x-data="{ openModal: false, selectedProduct: {}, qty: 1, total: 0, showForm: {{ $showModal }} }" class="bg-blue-900 min-h-screen py-12">
         <div class="max-w-7xl mx-auto px-6 sm:px-8 lg:px-10">
             <h1 class="text-3xl font-bold text-white mb-10 text-center">Katalog Produk</h1>
 
@@ -27,7 +32,8 @@
                             </p>
 
                             {{-- Tombol --}}
-                            <button @click="selectedProduct = {{ json_encode($product) }}; openModal = true; qty = 1; total = {{ $product->harga_satuan }}"
+                            <button
+                                @click="selectedProduct = {{ json_encode($product) }}; openModal = true; qty = 1; total = {{ $product->harga_satuan }}"
                                 class="mt-4 w-full bg-blue-600 text-white font-semibold py-2 rounded hover:bg-blue-700 transition-colors">
                                 Tambah ke Keranjang
                             </button>
@@ -94,9 +100,72 @@
                                 Masukkan ke Keranjang
                             </button>
                         </div>
+
+                        <div id="modalDetail"
+                            class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
+                            <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+                                <h2 class="text-lg font-semibold mb-4">Detail Transaksi</h2>
+                                <p><strong>Nama Produk:</strong> <span id="modalNama"></span></p>
+                                <p><strong>Jumlah:</strong> <span id="modalQty"></span></p>
+                                <p><strong>Berat:</strong> <span id="modalBerat"></span></p>
+                                <p><strong>Alamat:</strong> <span id="modalAlamat"></span></p>
+                                <p><strong>No HP:</strong> <span id="modalNoHP"></span></p>
+                                <p><strong>Total Harga:</strong> <span id="modalHarga"></span></p>
+
+                                <div class="mt-4 text-right">
+                                    <button onclick="document.getElementById('modalDetail').classList.add('hidden')"
+                                        class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Tutup</button>
+                                </div>
+                            </div>
+                        </div>
+
                     </form>
                 </div>
             </div>
         </div>
+
+        {{-- Modal Checkout --}}
+        <div x-show="showForm" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
+            x-transition:enter="transition ease-out duration-300" x-transition:leave="transition ease-in duration-200"
+            x-cloak>
+            <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg" @click.away="showForm = false">
+                <h2 class="text-xl font-semibold mb-4">Checkout</h2>
+                <form method="POST" action="{{ route('transaksi.storeTransaksi') }}" enctype="multipart/form-data">
+                    @csrf
+
+                    <div class="mb-4">
+                        <label class="block text-sm text-gray-600">Alamat Lengkap</label>
+                        <textarea name="alamat" required rows="3" class="w-full border border-gray-300 rounded px-3 py-2"></textarea>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="block text-sm text-gray-600">No HP</label>
+                        <input type="text" name="no_hp" maxlength="13" required
+                            class="w-full border border-gray-300 rounded px-3 py-2" />
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="block text-sm text-gray-600">Upload Bukti Pembayaran</label>
+                        <input type="file" name="bukti_transaksi" accept="image/*"
+                            class="w-full border border-gray-300 rounded px-3 py-2" required>
+                    </div>
+
+                    <div class="flex justify-end">
+                        <button type="button" @click="showForm = false"
+                            class="mr-3 px-4 py-2 text-gray-600 border border-gray-300 rounded hover:bg-gray-200">
+                            Batal
+                        </button>
+                        <button type="submit" class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">
+                            Finish
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+
     </div>
+
+
+
 </x-app-layout>

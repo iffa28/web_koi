@@ -10,8 +10,10 @@
                             <tr>
                                 <th class="px-6 py-3 text-left text-sm font-medium text-gray-600 uppercase">Kode Produk
                                 </th>
-                                <th class="px-6 py-3 text-left text-sm font-medium text-gray-600 uppercase">Nama Ikan</th>
-                                <th class="px-6 py-3 text-left text-sm font-medium text-gray-600 uppercase">Berat ikan</th>
+                                <th class="px-6 py-3 text-left text-sm font-medium text-gray-600 uppercase">Nama Ikan
+                                </th>
+                                <th class="px-6 py-3 text-left text-sm font-medium text-gray-600 uppercase">Berat ikan
+                                </th>
                                 <th class="px-6 py-3 text-left text-sm font-medium text-gray-600 uppercase">Qty</th>
                                 <th class="px-6 py-3 text-left text-sm font-medium text-gray-600 uppercase">Total Harga
                                 </th>
@@ -24,7 +26,8 @@
                                 <tr>
                                     <td class="px-6 py-4 text-sm text-gray-800">{{ $cart->kode_produk }}</td>
                                     <td class="px-6 py-4 text-sm text-gray-800">{{ $cart->produk->nama_produk }}</td>
-                                    <td class="px-6 py-4 text-sm text-gray-800">{{ $cart->produk->berat ?? '-' }} gram</td>
+                                    <td class="px-6 py-4 text-sm text-gray-800">{{ $cart->produk->berat ?? '-' }} gram
+                                    </td>
                                     <td class="px-6 py-4 text-sm text-gray-800">{{ $cart->qty }}</td>
                                     <td class="px-6 py-4 text-sm text-gray-800">
                                         Rp{{ number_format($cart->total_harga, 0, ',', '.') }}</td>
@@ -45,6 +48,13 @@
 
                     <div class="p-4">
                         {{ $carts->links() }}
+                        <div class="p-4 flex justify-end">
+                            <a href="{{ route('product.listproduct', ['show_checkout_modal' => true]) }}"
+                                class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
+                                Checkout
+                            </a>
+                        </div>
+
                     </div>
                 </div>
             @else

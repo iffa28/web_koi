@@ -19,6 +19,9 @@ class Transaksi extends Model
         'qty',
         'total_harga',
         'status',
+        'alamat',
+        'no_hp',
+        'bukti_transaksi',
     ];
 
     /**

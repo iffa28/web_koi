@@ -70,4 +70,37 @@ class TransaksiController extends Controller
             return redirect()->route('cart.index')->with('error', 'Terjadi kesalahan saat menghapus transaksi.');
         }
     }
+
+    public function storeTransaksi(Request $request)
+    {
+        $request->validate([
+            'alamat' => 'required|string',
+            'no_hp' => 'required|string',
+            'bukti_transaksi' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+        ]);
+
+        // Simpan gambar (binary)
+        $binaryImage = null;
+        if ($request->hasFile('bukti_transaksi')) {
+            $binaryImage = file_get_contents($request->file('bukti_transaksi')->getRealPath());
+        }
+
+        // Ambil semua transaksi "belum dibayar" user saat ini
+        $transaksiIds = Transaksi::where('user_id', Auth::id())
+            ->where('status', 'belum dibayar')
+            ->pluck('id');
+
+        // Update semua jadi "menunggu konfirmasi"
+        Transaksi::whereIn('id', $transaksiIds)->update([
+            'status' => 'menunggu pengiriman',
+            'alamat' => $request->alamat,
+            'no_hp' => $request->no_hp,
+            'bukti_transaksi' => $binaryImage,
+        ]);
+
+
+        return redirect()->route('product.listproduct', ['transaksi_id' => $transaksiIds->first()])
+            ->with('success', 'Pesanan berhasil diproses.');
+    }
+
 }
