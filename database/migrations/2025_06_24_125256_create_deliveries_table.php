@@ -14,16 +14,15 @@ return new class extends Migration
     {
         Schema::create('deliveries', function (Blueprint $table) {
             $table->id();
-            // Relasi ke detailtransactions
-            $table->foreignId('detailtransaction_id')
-                ->constrained('detailtransactions')
+            $table->foreignId('transaction_id')
+                ->constrained('transactions')
                 ->onDelete('cascade');
             $table->string('no_resi')->unique();
             $table->binary('upload_resi')->nullable();
             $table->timestamps();
         });
 
-         DB::statement("ALTER TABLE deliveries MODIFY upload_resi LONGBLOB");
+        DB::statement("ALTER TABLE deliveries MODIFY upload_resi LONGBLOB");
     }
 
     /**

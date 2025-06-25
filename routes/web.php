@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdminPesananController;
 use App\Http\Controllers\AdminTransaksiController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\DeliveryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TransaksiController;
@@ -43,6 +44,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::post('/product/{product:kode_produk}', [ProductController::class, 'update'])->name('product.update');
 
     Route::get('/adminPesanan', [AdminPesananController::class, 'index'])->name('adminPesanan.index');
+    Route::get('/adminPesanan/sentDelivery', [DeliveryController::class, 'store'])->name('adminPesanan.store');
     Route::get('/adminTransaksi', [AdminTransaksiController::class, 'index'])->name('adminTransaksi.index');
     Route::get('/adminTransaksi/{id}/bukti_transaksi', [AdminTransaksiController::class, 'showImage'])->name('adminTransaksi.image');
 });
