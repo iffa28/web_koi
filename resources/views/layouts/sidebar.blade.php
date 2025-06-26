@@ -97,6 +97,24 @@
                         </x-side-nav-link>
                     </div>
                 </li>
+                <li>
+                    <div :class="{ 'flex justify-center': sidebarCollapsed }">
+                        <x-side-nav-link :href="route('chat.adminmessages')" :active="request()->routeIs('chat.adminmessages')">
+                            <svg class="w-6 h-6 flex-shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+
+                                
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5z" />
+
+                                
+                            </svg>
+                            {{-- KODE SPAN YANG DIPERBAIKI --}}
+                            <span class="whitespace-nowrap transition-all duration-200"
+                                :class="{ 'ml-3 opacity-100': !sidebarCollapsed, 'w-0 opacity-0': sidebarCollapsed }">{{ __('Chat') }}</span>
+                        </x-side-nav-link>
+                    </div>
+                </li>
             @endcan
         </ul>
     </nav>
@@ -128,6 +146,7 @@
                     <li><x-side-nav-link :href="route('user.index')" :active="request()->routeIs('user.index')">Manajemen Pengguna</x-side-nav-link></li>
                     <li><x-side-nav-link :href="route('adminPesanan.index')" :active="request()->routeIs('adminPesanan.index')">Pesanan</x-side-nav-link></li>
                     <li><x-side-nav-link :href="route('adminTransaksi.index')" :active="request()->routeIs('adminTransaksi.index')">Transaksi</x-side-nav-link></li>
+                    <li><x-side-nav-link :href="route('chat.index')" :active="request()->routeIs('chat.index')">Transaksi</x-side-nav-link></li>
                 @endcan
             </ul>
         </nav>

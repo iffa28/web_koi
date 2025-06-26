@@ -109,7 +109,10 @@ class ProductController extends Controller
 
         $product->update($data);
 
-        return redirect()->back()->with('success', 'Produk berhasil diperbarui!');
+        return response()->json([
+            'message' => 'Produk berhasil diperbarui!',
+            'data' => $product
+        ]);
     }
 
     public function destroy(Product $product)

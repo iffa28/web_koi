@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdminPesananController;
 use App\Http\Controllers\AdminTransaksiController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\ChatController;
 use App\Http\Controllers\DeliveryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
@@ -31,6 +32,10 @@ Route::middleware('auth')->group(function () {
     Route::post('/transaction', [TransaksiController::class, 'store'])->name('transaksi.store');
     Route::delete('/cart/{transaksi}', [TransaksiController::class, 'destroy'])->name('transaksi.destroy');
     Route::post('/listproduct/savetransaksi', [TransaksiController::class, 'storeTransaksi'])->name('transaksi.storeTransaksi');
+
+    Route::get('/chat', [ChatController::class, 'startOrShow'])->name('chat.index');
+    Route::get('/chat/{id}', [ChatController::class, 'show'])->name('chat.show');
+    Route::post('/chat/{id}/send', [ChatController::class, 'sendMessage'])->name('chat.send');
 });
 
 // update data remove and make admin
@@ -39,12 +44,12 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::delete('/user/{user}', [UserController::class, 'destroy'])->name('user.destroy');
 
     Route::get('/product', [ProductController::class, 'index'])->name('product.index');
-    
-    Route::post('/products', [ProductController::class, 'store'])->name('product.store');
+
+    Route::post('/product', [ProductController::class, 'store'])->name('product.store');
     Route::delete('/product/{product}', [ProductController::class, 'destroy'])->name('product.destroy');
     Route::get('/product/{product:kode_produk}/json', [ProductController::class, 'showJson'])->name('product.showJson');
-    Route::post('/products/{product}', [ProductController::class, 'update'])->name('product.update');
-    
+    Route::patch('/product/{product}/adited', [ProductController::class, 'update'])->name('product.update');
+
 
     Route::get('/adminPesanan', [AdminPesananController::class, 'index'])->name('adminPesanan.index');
     Route::post('/adminPesanan/sentdelivery', [DeliveryController::class, 'store'])->name('delivery.store');
@@ -52,6 +57,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
 
     Route::get('/adminTransaksi', [AdminTransaksiController::class, 'index'])->name('adminTransaksi.index');
     Route::get('/adminTransaksi/{id}/bukti_transaksi', [AdminTransaksiController::class, 'showImage'])->name('adminTransaksi.image');
+    Route::get('/Messages', [ChatController::class, 'index'])->name('chat.adminmessages');
 });
 
 require __DIR__ . '/auth.php';
