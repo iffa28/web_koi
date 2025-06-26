@@ -32,6 +32,10 @@ Route::middleware('auth')->group(function () {
     Route::post('/transaction', [TransaksiController::class, 'store'])->name('transaksi.store');
     Route::delete('/cart/{transaksi}', [TransaksiController::class, 'destroy'])->name('transaksi.destroy');
     Route::post('/listproduct/savetransaksi', [TransaksiController::class, 'storeTransaksi'])->name('transaksi.storeTransaksi');
+    Route::patch('/transaksi/{id}/selesai', [TransaksiController::class, 'tandaiSelesai'])->name('transaksi.selesai');
+
+
+    Route::get('/history', [TransaksiController::class, 'riwayatTransaksi'])->name('history.index');
 
     Route::get('/chat', [ChatController::class, 'startOrShow'])->name('chat.index');
     Route::get('/chat/{id}', [ChatController::class, 'show'])->name('chat.show');

@@ -24,6 +24,9 @@
                     <x-nav-link :href="route('chat.index')" :active="request()->routeIs('chat.index')">
                         {{ __('Chat') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('history.index')" :active="request()->routeIs('history.index')">
+                        {{ __('History') }}
+                    </x-nav-link>
                 </div>
 
             </div>
@@ -96,6 +99,9 @@
             </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('chat.index')" :active="request()->routeIs('chat.index')">
                 {{ __('Chat') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('history.index')" :active="request()->routeIs('history.index')">
+                {{ __('History') }}
             </x-responsive-nav-link>
 
 

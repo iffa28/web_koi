@@ -103,6 +103,24 @@ class TransaksiController extends Controller
             ->with('success', 'Pesanan berhasil diproses.');
     }
 
-    
+    public function riwayatTransaksi()
+    {
+        $riwayat = Transaksi::where('user_id', Auth::id())
+            ->orderBy('created_at', 'desc')
+            ->get();
 
+        return view('history.index', compact('riwayat'));
+    }
+    public function tandaiSelesai($id)
+    {
+        $transaksi = Transaksi::where('id', $id)
+            ->where('user_id', Auth::id()) // pastikan hanya user yang punya transaksi ini bisa ubah
+            ->where('status', 'dikirim')
+            ->firstOrFail();
+
+        $transaksi->status = 'selesai';
+        $transaksi->save();
+
+        return redirect()->route('dashboard')->with('success', 'Transaksi berhasil ditandai sebagai selesai.');
+    }
 }
