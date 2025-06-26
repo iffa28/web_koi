@@ -32,6 +32,11 @@ class Transaksi extends Model
         return $this->belongsTo(Product::class, 'kode_produk', 'kode_produk');
     }
 
+    public function delivery()
+    {
+        return $this->hasOne(Delivery::class, 'transaction_id', 'id');
+    }
+
     /**
      * Relasi ke User
      */

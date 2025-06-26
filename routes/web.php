@@ -7,6 +7,7 @@ use App\Http\Controllers\DeliveryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TransaksiController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -14,9 +15,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', [DashboardController::class, 'index'])
+    ->middleware(['auth', 'verified'])->name('dashboard');
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -38,13 +39,17 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::delete('/user/{user}', [UserController::class, 'destroy'])->name('user.destroy');
 
     Route::get('/product', [ProductController::class, 'index'])->name('product.index');
+    
     Route::post('/products', [ProductController::class, 'store'])->name('product.store');
     Route::delete('/product/{product}', [ProductController::class, 'destroy'])->name('product.destroy');
     Route::get('/product/{product:kode_produk}/json', [ProductController::class, 'showJson'])->name('product.showJson');
-    Route::post('/product/{product:kode_produk}', [ProductController::class, 'update'])->name('product.update');
+    Route::post('/products/{product}', [ProductController::class, 'update'])->name('product.update');
+    
 
     Route::get('/adminPesanan', [AdminPesananController::class, 'index'])->name('adminPesanan.index');
-    Route::get('/adminPesanan/sentDelivery', [DeliveryController::class, 'store'])->name('adminPesanan.store');
+    Route::post('/adminPesanan/sentdelivery', [DeliveryController::class, 'store'])->name('delivery.store');
+    Route::patch('/adminPesanan/{id}/batalkanpesanan', [AdminPesananController::class, 'batalkanStatus'])->name('adminPesanan.batalkanStatus');
+
     Route::get('/adminTransaksi', [AdminTransaksiController::class, 'index'])->name('adminTransaksi.index');
     Route::get('/adminTransaksi/{id}/bukti_transaksi', [AdminTransaksiController::class, 'showImage'])->name('adminTransaksi.image');
 });

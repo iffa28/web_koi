@@ -5,7 +5,7 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 py-12">
 
             {{-- Judul Utama Halaman --}}
-            <h1 class="text-3xl font-bold text-white mb-8">Manajemen Pengguna</h1>
+            <h1 class="text-6xl font-bold text-white mb-8 text-center">Manajemen Pengguna</h1>
 
             {{-- Container utama Alpine.js untuk mengelola modal konfirmasi hapus --}}
             <div x-data="{
@@ -20,13 +20,13 @@
                 </div>
 
                 {{-- Container Tabel - Dibuat scrollable di layar kecil untuk responsivitas --}}
-                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-x-auto">
-                    <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-                        <thead class="bg-gray-50 dark:bg-gray-700">
+                <div class="bg-black bg-opacity-20 rounded-lg shadow-md overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-black bg-opacity-25">
                             <tr>
                                 <th
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                                    #</th>
+                                    No</th>
                                 <th
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                                     Nama</th>
@@ -41,16 +41,16 @@
                                     Action</th>
                             </tr>
                         </thead>
-                        <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+                        <tbody class="divide-y divide-white/10">
                             @forelse ($users as $index => $user)
                                 <tr>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-gray-200">
                                         {{ $users->firstItem() + $index }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-gray-200">
                                         {{ $user->name }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-gray-200">
                                         {{ $user->email }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-gray-200">
                                         {{ $user->created_at->format('d M Y H:i') }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                         {{-- Form hapus diberi id unik berdasarkan id user --}}
@@ -78,7 +78,7 @@
                         </tbody>
                     </table>
                     {{-- Paginasi --}}
-                    <div class="p-4 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700">
+                    <div class="p-4 border-t border-white/10">
                         {{ $users->links() }}
                     </div>
                 </div>

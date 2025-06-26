@@ -16,7 +16,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body class="font-sans antialiased" x-data="{ sidebarOpen: false, sidebarCollapsed: false }">
+<body class="font-sans antialiased" x-data="{ sidebarOpen: false, sidebarCollapsed: localStorage.getItem('sidebarCollapsed') === 'true' }" x-init="$watch('sidebarCollapsed', value => localStorage.setItem('sidebarCollapsed', value))">
     @php
         $role = Auth::check() ? Auth::user()->role : null;
     @endphp
@@ -25,29 +25,31 @@
 
         {{-- Sidebar untuk admin --}}
         @if ($role === 'admin')
-            {{-- Sidebar desktop --}}
-            <div class="hidden md:flex transition-all duration-300 ease-in-out"
-                :class="{ 'w-64': !sidebarCollapsed, 'w-7': sidebarCollapsed }">
-                @include('layouts.sidebar')
-            </div>
-
-            {{-- Sidebar mobile --}}
-            <div x-show="sidebarOpen" class="fixed inset-0 flex z-40 md:hidden" x-cloak>
-                <div x-show="sidebarOpen" @click="sidebarOpen = false"
-                    x-transition:enter="transition-opacity ease-linear duration-300"
-                    x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
-                    x-transition:leave="transition-opacity ease-linear duration-300"
-                    x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
-                    class="fixed inset-0 bg-gray-600 bg-opacity-75"></div>
-
-                <div x-show="sidebarOpen" x-transition:enter="transition ease-in-out duration-300 transform"
-                    x-transition:enter-start="-translate-x-full" x-transition:enter-end="translate-x-0"
-                    x-transition:leave="transition ease-in-out duration-300 transform"
-                    x-transition:leave-start="translate-x-0" x-transition:leave-end="-translate-x-full"
-                    class="relative flex-1 flex flex-col max-w-xs w-full bg-gray-800">
+            @if (!request()->routeIs('dashboard'))
+                {{-- Sidebar desktop --}}
+                <div class="hidden md:flex transition-all duration-300 ease-in-out"
+                    :class="{ 'w-64': !sidebarCollapsed, 'w-13': sidebarCollapsed }">
                     @include('layouts.sidebar')
                 </div>
-            </div>
+
+                {{-- Sidebar mobile --}}
+                <div x-show="sidebarOpen" class="fixed inset-0 flex z-40 md:hidden" x-cloak>
+                    <div x-show="sidebarOpen" @click="sidebarOpen = false"
+                        x-transition:enter="transition-opacity ease-linear duration-300"
+                        x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
+                        x-transition:leave="transition-opacity ease-linear duration-300"
+                        x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
+                        class="fixed inset-0 bg-gray-600 bg-opacity-75"></div>
+
+                    <div x-show="sidebarOpen" x-transition:enter="transition ease-in-out duration-300 transform"
+                        x-transition:enter-start="-translate-x-full" x-transition:enter-end="translate-x-0"
+                        x-transition:leave="transition ease-in-out duration-300 transform"
+                        x-transition:leave-start="translate-x-0" x-transition:leave-end="-translate-x-full"
+                        class="relative flex-1 flex flex-col max-w-xs w-full bg-gray-800">
+                        @include('layouts.sidebar')
+                    </div>
+                </div>
+            @endif
         @endif
 
         <div class="flex-1 flex flex-col overflow-hidden">
@@ -79,13 +81,13 @@
                         @endif
                     </div>
 
-                    <div class="shrink-0 flex items-center">
+                    {{-- <div class="shrink-0 flex items-center">
                         <a href="{{ route('dashboard') }}">
                             <img src="{{ asset('/images/logo.png') }}" alt="Logo Toko Koi A3"
                                 class="w-10 h-10 object-contain">
                         </a>
                         {{ __('A3 KOI Farm') }}
-                    </div>
+                    </div> --}}
 
 
                     {{-- Tombol Logout --}}
@@ -107,7 +109,8 @@
             @endif
 
             {{-- Konten --}}
-            <main class="flex-1 overflow-x-hidden overflow-y-auto {{ $role === 'admin' ? 'bg-blue-900' : 'bg-white' }}">
+            <main
+                class="flex-1 overflow-x-hidden overflow-y-auto {{ $role === 'admin' ? 'bg-blue-900' : 'bg-blue-900' }}">
                 <div class="container mx-auto px-6 py-8">
                     {{ $slot }}
                 </div>

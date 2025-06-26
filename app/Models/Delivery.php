@@ -20,6 +20,6 @@ class Delivery extends Model
 
     public function pengirimanProduk()
     {
-        return $this->belongsTo(Transaksi::class, 'transaction_id', 'transaction_id');
+        return $this->belongsTo(Transaksi::class, 'transaction_id', 'id');
     }
 }
