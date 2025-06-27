@@ -99,11 +99,11 @@ class TransaksiController extends Controller
         ]);
 
 
-        return redirect()->route('product.listproduct', ['transaksi_id' => $transaksiIds->first()])
+        return redirect()->route('product.listproduct', [ 'show_detail_modal' => 1,'transaksi_id' => $transaksiIds->first()])
             ->with('success', 'Pesanan berhasil diproses.');
     }
 
-    public function riwayatTransaksi()
+    public function semuaTransaksi()
     {
         $riwayat = Transaksi::where('user_id', Auth::id())
             ->orderBy('created_at', 'desc')
@@ -111,6 +111,16 @@ class TransaksiController extends Controller
 
         return view('history.index', compact('riwayat'));
     }
+
+    public function detailTransaksi()
+    {
+        $detail = Transaksi::where('user_id', Auth::id())
+            ->orderBy('created_at', 'desc')
+            ->first(); // hanya ambil satu transaksi terbaru
+
+        return view('product.listproduct', compact('detail'));
+    }
+
     public function tandaiSelesai($id)
     {
         $transaksi = Transaksi::where('id', $id)

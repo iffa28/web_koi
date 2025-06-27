@@ -11,6 +11,7 @@
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/splide.min.css">
 
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -55,7 +56,7 @@
         <div class="flex-1 flex flex-col overflow-hidden">
             @if (Auth::user()->role === 'admin')
                 <header
-                    class="flex justify-between items-center py-4 px-6 bg-white dark:bg-gray-800 border-b dark:border-gray-700">
+                    class="flex justify-between items-center py-4 px-6 bg-gray-900 text-gray-300 dark:bg-gray-800 border-b dark:border-blue-700">
                     <div class="flex items-center">
                         {{-- Tombol Toggle Sidebar --}}
                         <button @click="sidebarCollapsed = !sidebarCollapsed"
@@ -117,6 +118,7 @@
             </main>
         </div>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js"></script>
 </body>
 
 </html>

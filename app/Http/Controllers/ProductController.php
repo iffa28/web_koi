@@ -20,7 +20,7 @@ class ProductController extends Controller
     {
         $products = Product::orderBy('created_at', 'asc') // Urut berdasarkan tanggal dibuat
             ->select('kode_produk', 'nama_produk', 'berat', 'harga_satuan', 'gambar') // sertakan kode_produk untuk gambar
-            ->paginate(10);
+            ->paginate(20);
 
         return view('product.listproduct', compact('products'));
     }

@@ -13,23 +13,45 @@ class ChatController extends Controller
     {
         $user = Auth::user();
 
-        // Jika admin, tampilkan semua chat
         if ($user->role === 'admin') {
-            $chats = Chat::with('user')->latest()->get();
+            // Untuk admin, ambil semua chat beserta user dan 1 pesan terakhir
+            $chats = \App\Models\Chat::with([
+                'user',
+                'messages' => function ($query) {
+                    $query->latest()->limit(1);
+                }
+            ])->withCount(['messages as unreadCount' => function ($query) {
+                $query->whereNull('read_at')->where('sender_id', '!=', Auth::id());
+            }])->latest()->get();
         } else {
-            // Jika customer, hanya chat miliknya
-            $chats = Chat::where('user_id', $user->id)->with('admin')->get();
+            // Untuk customer, ambil chat miliknya dan admin, serta 1 pesan terakhir
+            $chats = \App\Models\Chat::where('user_id', $user->id)
+                ->with([
+                    'admin',
+                    'messages' => function ($query) {
+                        $query->latest()->limit(1);
+                    }
+                ])
+                ->withCount(['messages as unreadCount' => function ($query) {
+                    $query->where('sender_id', '!=', Auth::id());
+                }])
+                ->get();
         }
 
         return view('chat.index', compact('chats'));
     }
 
-    public function show($chat_id)
+
+    public function show($id)
     {
-        $chat = Chat::with(['messages.sender'])->findOrFail($chat_id);
+        $chat = Chat::with('messages')->findOrFail($id);
+
+        if (request()->ajax()) {
+            return response()->view('chat.show', compact('chat'));
+        }
+
         return view('chat.show', compact('chat'));
     }
-
     public function sendMessage(Request $request, $chat_id)
     {
         $request->validate(['isi_pesan' => 'required|string']);
