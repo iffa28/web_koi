@@ -31,6 +31,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
     Route::post('/transaction', [TransaksiController::class, 'store'])->name('transaksi.store');
     Route::delete('/cart/{transaksi}', [TransaksiController::class, 'destroy'])->name('transaksi.destroy');
+    
 
     Route::get('/listproduct', [ProductController::class, 'listproduct'])->name('product.listproduct');
     Route::post('/listproduct/savetransaksi', [TransaksiController::class, 'storeTransaksi'])->name('transaksi.storeTransaksi');
@@ -38,6 +39,7 @@ Route::middleware('auth')->group(function () {
 
 
     Route::patch('/transaksi/{id}/selesai', [TransaksiController::class, 'tandaiSelesai'])->name('transaksi.selesai');
+    
 
     
 

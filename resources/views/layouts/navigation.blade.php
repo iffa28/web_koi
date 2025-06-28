@@ -17,6 +17,9 @@
             <div class="hidden sm:flex sm:items-center sm:justify-center">
                 <div class="hidden space-x-8 sm:flex">
                     {{-- Ganti link sesuai gambar --}}
+                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                        {{ __('Dashboard') }}
+                    </x-nav-link>
                     <x-nav-link :href="route('product.listproduct')" :active="request()->routeIs('product.listproduct')">
                         {{ __('Produk') }}
                     </x-nav-link>
@@ -28,7 +31,7 @@
                     </x-nav-link>
                     {{-- Anda perlu membuat route untuk 'transaksi.index' --}}
                     <x-nav-link :href="route('history.index')" :active="request()->routeIs('history.index')">
-                        {{ __('Daftar Transaksi') }}
+                        {{ __('Riwayat Transaksi') }}
                     </x-nav-link>
                 </div>
             </div>
@@ -91,6 +94,9 @@
     <div :class="{ 'block': open, 'hidden': !open }" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
             {{-- Sesuaikan juga link untuk tampilan mobile --}}
+            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                {{ __('Produk') }}
+            </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('product.listproduct')" :active="request()->routeIs('product.listproduct')">
                 {{ __('Produk') }}
             </x-responsive-nav-link>
@@ -101,7 +107,7 @@
                 {{ __('Chat') }}
             </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('history.index')" :active="request()->routeIs('history.index')">
-                {{ __('Daftar Transaksi') }}
+                {{ __('Riwayat Transaksi') }}
             </x-responsive-nav-link>
         </div>
 

@@ -12,6 +12,9 @@
                         <tr>
                             <th
                                 class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                Tanggal</th>
+                            <th
+                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                                 Kode Produk</th>
                             <th
                                 class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
@@ -25,21 +28,19 @@
                             <th
                                 class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                                 Status</th>
-                            <th
-                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                                Tanggal</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-white/10">
                         @foreach ($riwayat as $item)
                             <tr>
+                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-gray-200 text-sm text-gray-200">
+                                    {{ \Carbon\Carbon::parse($item->created_at)->format('d M Y H:i') }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-gray-200">{{ $item->kode_produk }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-gray-200">{{ $item->produk->nama_produk }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-gray-200">{{ $item->qty }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-gray-200">Rp{{ number_format($item->total_harga, 0, ',', '.') }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-gray-200 capitalize">{{ $item->status }}</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-gray-200 text-sm text-gray-500">
-                                    {{ \Carbon\Carbon::parse($item->created_at)->format('d M Y H:i') }}</td>
+                               
                             </tr>
                         @endforeach
                     </tbody>

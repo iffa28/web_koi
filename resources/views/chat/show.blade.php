@@ -1,75 +1,121 @@
 <x-app-layout>
-    <div class="bg-blue-900 h-[calc(100vh-4rem)] flex flex-col">
+    {{-- CSS Kustom untuk Scrollbar --}}
+    <style>
+        #chat-box::-webkit-scrollbar {
+            width: 8px;
+        }
 
-        {{-- Kontainer utama untuk memusatkan jendela chat, dibuat mengisi semua ruang yang tersedia --}}
-        <div class="flex-grow flex items-center justify-center p-4 sm:p-6 lg:p-8">
+        #chat-box::-webkit-scrollbar-track {
+            background: transparent;
+        }
 
-            {{-- JENDELA CHAT UTAMA --}}
-            <div
-                class="w-full max-w-4xl h-full flex flex-col bg-blue-950/50 border border-white/10 rounded-2xl shadow-2xl">
+        #chat-box::-webkit-scrollbar-thumb {
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            border: 2px solid transparent;
+            background-clip: content-box;
+        }
 
+        #chat-box::-webkit-scrollbar-thumb:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+    </style>
 
-                {{-- HEADER CHAT --}}
-                <div class="flex-shrink-0 p-4 border-b border-white/10">
-                    <h1 class="text-xl font-bold text-white text-center">
-                        Chat dengan
+    {{-- 1. Latar Belakang Gradien yang Lebih Dinamis --}}
+    <div class="bg-gradient-to-br from-gray-900 via-blue-950 to-black min-h-screen flex flex-col">
+        <div class="max-w-4xl w-full mx-auto flex flex-col flex-grow pt-8 pb-6 px-4">
+
+            {{-- Judul Halaman --}}
+            <h1 class="text-3xl font-bold text-white mb-6 text-center tracking-tight drop-shadow-lg">
+                Chat
+            </h1>
+
+            {{-- 2. JENDELA CHAT DENGAN EFEK GLASSMORPHISM --}}
+            <div class="w-full flex flex-col bg-black bg-opacity-20 backdrop-blur-lg border border-white/10 rounded-lg shadow-2xl"
+                style="height: 80vh;">
+
+                {{-- 3. HEADER CHAT DENGAN AVATAR --}}
+                <div
+                    class="bg-black bg-opacity-20 flex-shrink-0 p-4 border-b border-white/10 flex items-center gap-4 rounded-lg">
+                    <div class="flex-shrink-0">
+                        <div
+                            class="h-10 w-10 bg-blue-500 rounded-full flex items-center justify-center font-bold text-white">
+                            {{-- Inisial dari nama partner chat --}}
+                            {{ strtoupper(substr($chatPartner->name ?? (Auth::user()->role === 'admin' ? $chat->user->name : 'A'), 0, 1)) }}
+                        </div>
+                    </div>
+                    <h2 class="text-lg font-bold text-white truncate">
                         {{ $chatPartner->name ?? (Auth::user()->role === 'admin' ? $chat->user->name : 'Admin') }}
-                    </h1>
+                    </h2>
                 </div>
 
-                {{-- AREA PESAN (BODY) --}}
-                {{-- Kelas 'flex-grow' dan 'overflow-y-auto' memastikan hanya area ini yang bisa di-scroll --}}
-                <div id="chat-box" class="flex-grow p-4 sm:p-6 space-y-6 overflow-y-auto min-h-0">
+                {{-- 4. AREA PESAN DENGAN SCROLLBAR KUSTOM --}}
+                <div id="chat-box" class="flex-grow p-4 sm:p-6 space-y-1 overflow-y-auto" style="min-height: 0;">
                     @forelse ($chat->messages as $message)
                         @if ($message->sender_id === Auth::id())
-                            {{-- PESAN ANDA (KANAN) --}}
-                            <div class="flex items-start justify-end gap-3">
+                            {{-- 5. GELEMBUNG PESAN ANDA (KANAN) --}}
+                            <div class="flex items-end justify-end gap-2.5">
                                 <div>
-                                    <div class="px-4 py-3 bg-blue-600 rounded-lg rounded-tr-lg shadow-md">
-                                        <p class="text-sm text-white leading-relaxed">{{ $message->isi_pesan }}</p>
+                                    <div
+                                        class="inline-block px-4 py-2.5 bg-blue-600 shadow-lg rounded-lg rounded-br-none max-w-sm sm:max-w-md">
+                                        <p class="text-sm text-white leading-relaxed break-words">
+                                            {{ $message->isi_pesan }}</p>
                                     </div>
-                                    <p class="text-xs text-white text-right mt-1">
-                                        {{ $message->created_at->format('d M Y H:i') }}</p>
+                                    <p class="text-xs text-white text-right mt-2">
+                                        {{ $message->created_at->format('d M Y H:i') }}
+                                    </p>
                                 </div>
                             </div>
                         @else
-                            {{-- PESAN LAWAN BICARA (KIRI) --}}
-                            <div class="flex items-start justify-start gap-3">
+                            {{-- 6. GELEMBUNG PESAN LAWAN BICARA (KIRI) --}}
+                            <div class="flex items-end justify-start gap-2.5 mt-3">
                                 <div>
-                                    <div class="px-4 py-3 bg-white bg-opacity-90 rounded-lg rounded-tl-lg shadow-md">
-                                        <p class="text-sm text-gray-800 leading-relaxed">{{ $message->isi_pesan }}</p>
+                                    <div
+                                        class="inline-block px-4 py-2.5 bg-gray-200 shadow-lg rounded-lg rounded-bl-none max-w-sm sm:max-w-md">
+                                        <p class="text-sm text-black leading-relaxed break-words">
+                                            {{ $message->isi_pesan }}</p>
                                     </div>
-                                    <p class="text-xs text-white mt-1">{{ $message->created_at->format('d M Y H:i') }}
+                                    <p class="text-xs text-white mt-2">
+                                        {{ $message->created_at->format('d M Y H:i') }}
                                     </p>
                                 </div>
                             </div>
                         @endif
                     @empty
-                        <div class="text-center text-blue-300/40 pt-16">
+                        <div class="text-center text-blue-300/60 pt-16 flex flex-col items-center gap-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-blue-400/30" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                            </svg>
                             <p>Belum ada pesan. Mulai percakapan!</p>
                         </div>
                     @endforelse
                 </div>
 
-                {{-- AREA INPUT (FOOTER) --}}
-                <div class="flex-shrink-0 p-4 border-t border-white/10 bg-blue-950/50 rounded-b-2xl">
+                {{-- 7. AREA INPUT YANG LEBIH BERSIH --}}
+                <div class="flex-shrink-0 p-4 border-t border-white/10 bg-black/10">
                     <form action="{{ route('chat.send', $chat->id) }}" method="POST" class="flex items-center gap-3">
                         @csrf
                         <input type="text" name="isi_pesan"
-                            class="flex-grow w-full bg-white bg-opacity-30 border-2 border-transparent text-black rounded-full px-5 py-2.5 focus:outline-none focus:border-blue-500 transition"
+                            class="flex-grow w-full bg-black/30 border-2 border-transparent text-black rounded-full px-5 py-3 placeholder-gray-400 focus:outline-none focus:border-blue-500 transition"
                             placeholder="Ketik pesan..." autocomplete="off" required>
                         <button type="submit"
-                            class="bg-blue-600 text-white font-semibold rounded-full px-6 py-2.5 hover:bg-blue-700 transition shadow-lg">
-                            Kirim
+                            class="flex-shrink-0 bg-blue-600 text-white rounded-full h-12 w-12 flex items-center justify-center hover:bg-blue-700 transition shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-900 focus:ring-blue-500">
+                            {{-- Ikon Kirim --}}
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 transform rotate-90" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                            </svg>
                         </button>
                     </form>
                 </div>
-
             </div>
         </div>
     </div>
 
-    {{-- Script JavaScript tidak perlu diubah, akan tetap berfungsi dengan baik --}}
+    {{-- Script JavaScript tetap (tidak ada perubahan) --}}
     <script>
         const chatBox = document.getElementById('chat-box');
 
