@@ -18,11 +18,10 @@ class DashboardController extends Controller
             return view('admin.dashboard');
         }
 
-        // Ambil transaksi user yang status-nya menunggu pengiriman atau dikirim
-        $transaksis = Transaksi::where('user_id', $user->id)
-            ->whereIn('status', ['menunggu pengiriman', 'dikirim'])
-            ->orderBy('created_at', 'desc')
-            ->get();
+        $transaksis = Transaksi::with('produk') // pastikan eager load relasi produk
+        ->where('user_id', Auth::id())
+        ->whereIn('status', ['menunggu pengiriman', 'dikirim'])
+        ->get();
 
         return view('customer.dashboard', compact('transaksis'));
     }

@@ -33,14 +33,19 @@
                     <tbody class="divide-y divide-white/10">
                         @foreach ($riwayat as $item)
                             <tr>
-                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-gray-200 text-sm text-gray-200">
+                                <td
+                                    class="px-6 py-4 whitespace-nowrap text-sm font-bold text-gray-200 text-sm text-gray-200">
                                     {{ \Carbon\Carbon::parse($item->created_at)->format('d M Y H:i') }}</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-gray-200">{{ $item->kode_produk }}</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-gray-200">{{ $item->produk->nama_produk }}</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-gray-200">{{ $item->qty }}</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-gray-200">Rp{{ number_format($item->total_harga, 0, ',', '.') }}</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-gray-200 capitalize">{{ $item->status }}</td>
-                               
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-gray-200">
+                                    {{ $item->kode_produk }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-gray-200">
+                                    {{ $item->produk->nama_produk }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-gray-200">
+                                    {{ $item->qty }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-gray-200">
+                                    Rp{{ number_format($item->total_harga, 0, ',', '.') }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-gray-200 capitalize">
+                                    {{ $item->status }}</td>
                             </tr>
                         @endforeach
                     </tbody>

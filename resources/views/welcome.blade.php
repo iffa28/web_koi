@@ -68,7 +68,7 @@
                             {{-- LANGKAH 4: Menghubungkan tombol ke section "Tentang Kami" --}}
                             <a href="#tentang-kami"
                                 class="mt-8 inline-block bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-8 rounded-lg transition-colors duration-300 shadow-lg">
-                                Pelajari lebih lanjut
+                                Tentang Kami
                             </a>
                         </div>
                     </div>

@@ -39,7 +39,8 @@ Route::middleware('auth')->group(function () {
 
 
     Route::patch('/transaksi/{id}/selesai', [TransaksiController::class, 'tandaiSelesai'])->name('transaksi.selesai');
-    
+    Route::get('/dashboard/detail/{id}', [TransaksiController::class, 'detailTransaksiAktif'])->name('transaksi.detail');
+
 
     
 

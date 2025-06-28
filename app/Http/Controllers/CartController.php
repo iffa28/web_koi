@@ -18,4 +18,5 @@ class CartController extends Controller
 
         return view('cart.index', compact('carts'));
     }
+    
 }

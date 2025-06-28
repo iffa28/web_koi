@@ -21,6 +21,13 @@
                             <tr>
                                 <th
                                     class="px-6 py-3 text-left text-xs font-medium text-blue-200 uppercase tracking-wider">
+                                    Tanggal Transaksi</th>
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-medium text-blue-200 uppercase tracking-wider">
+                                    nama pengguna</th>
+                            
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-medium text-blue-200 uppercase tracking-wider">
                                     Kode
                                     Produk</th>
                                 <th
@@ -47,6 +54,10 @@
                         <tbody class="divide-y divide-white/10">
                             @forelse ($orders as $order)
                                 <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-gray-200">
+                                        {{ $order->created_at->format('d M Y') }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-gray-200">
+                                        {{ $order->user->name ?? '-' }}</td>
                                     {{-- Warna teks diubah menjadi terang --}}
                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-gray-200">
                                         {{ $order->kode_produk }}</td>

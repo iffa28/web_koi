@@ -35,6 +35,9 @@
                                     Tanggal Transaksi</th>
                                 <th
                                     class="px-6 py-3 text-left text-xs font-medium text-blue-200 uppercase tracking-wider">
+                                    nama pengguna</th>
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-medium text-blue-200 uppercase tracking-wider">
                                     Kode
                                     Produk</th>
                                 <th
@@ -69,7 +72,9 @@
                             @forelse ($orders as $order)
                                 <tr>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-gray-200">
-                                        {{ $order->created_add }}</td>
+                                        {{ $order->created_at->format('d M Y') }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-gray-200">
+                                        {{ $order->user->name ?? '-' }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-gray-200">
                                         {{ $order->kode_produk }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-gray-200">

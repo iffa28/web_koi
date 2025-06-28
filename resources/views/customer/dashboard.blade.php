@@ -18,9 +18,6 @@
                             class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition-colors">
                             Lihat Koleksi Produk
                         </a>
-                        <a href="#" class="ml-4 inline-block text-blue-600 hover:underline">
-                            Riwayat Transaksi Anda
-                        </a>
                     </div>
                 </div>
             </div>

@@ -11,7 +11,7 @@ class ProductController extends Controller
     public function index()
     {
 
-        $products = Product::orderBy('created_at', 'desc')->paginate(10);
+        $products = Product::orderBy('created_at', 'desc')->paginate(20);
 
         return view('product.index', compact('products'));
     }
@@ -20,7 +20,7 @@ class ProductController extends Controller
     {
         $products = Product::orderBy('created_at', 'asc') // Urut berdasarkan tanggal dibuat
             ->select('kode_produk', 'nama_produk', 'berat', 'harga_satuan', 'gambar') // sertakan kode_produk untuk gambar
-            ->paginate(20);
+            ->paginate(10);
 
         return view('product.listproduct', compact('products'));
     }

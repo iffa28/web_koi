@@ -99,15 +99,17 @@ class TransaksiController extends Controller
         ]);
 
 
-        return redirect()->route('product.listproduct', [ 'show_detail_modal' => 1,'transaksi_id' => $transaksiIds->first()])
+        return redirect()->route('product.listproduct', ['show_detail_modal' => 1, 'transaksi_id' => $transaksiIds->first()])
             ->with('success', 'Pesanan berhasil diproses.');
     }
 
     public function semuaTransaksi()
     {
         $riwayat = Transaksi::where('user_id', Auth::id())
+            ->where('status', '!=', 'belum dibayar') // Menampilkan semua status kecuali yang masih di keranjang
+            ->with('produk') // Eager load data produk
             ->orderBy('created_at', 'desc')
-            ->get();
+            ->paginate(10);
 
         return view('history.index', compact('riwayat'));
     }
@@ -119,6 +121,18 @@ class TransaksiController extends Controller
             ->first(); // hanya ambil satu transaksi terbaru
 
         return view('product.listproduct', compact('detail'));
+    }
+
+    public function detailAktif($id)
+    {
+        $transaksi = Transaksi::where('id', $id)
+            ->where('user_id', Auth::id()) // hanya transaksi milik user yang login
+            ->firstOrFail();
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $transaksi
+        ]);
     }
 
     public function tandaiSelesai($id)
@@ -133,5 +147,4 @@ class TransaksiController extends Controller
 
         return redirect()->route('dashboard')->with('success', 'Transaksi berhasil ditandai sebagai selesai.');
     }
-    
 }

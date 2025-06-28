@@ -14,9 +14,9 @@ class AdminTransaksiController extends Controller
             abort(403, 'Akses ditolak. Halaman ini hanya untuk admin.');
         }
 
-        $orders = Transaksi::with('produk')
+        $orders = Transaksi::with('produk', 'user')
             ->whereIn('status', ['dibatalkan', 'selesai', 'dikirimkan']) // ✅ hanya status tertentu
-            ->select('id', 'kode_produk', 'qty', 'total_harga', 'status', 'bukti_transaksi')
+            ->select('id', 'kode_produk', 'qty', 'total_harga', 'status', 'bukti_transaksi', 'created_at', 'user_id')
             ->paginate(10);
 
         return view('adminTransaksi.index', compact('orders'));

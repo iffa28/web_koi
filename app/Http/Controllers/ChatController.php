@@ -44,6 +44,7 @@ class ChatController extends Controller
 
     public function show($id)
     {
+        //mengabil dari yang terlama ke yang baru krn idnya
         $chat = Chat::with('messages')->findOrFail($id);
 
         if (request()->ajax()) {

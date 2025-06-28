@@ -46,9 +46,10 @@
                     <div class="col-span-5 text-center text-gray-100">Tidak ada produk tersedia.</div>
                 @endforelse
             </div>
-
-            {{-- Pagination --}}
-            <div class="mt-8">{{ $products->links() }}</div>
+            
+            <div class="p-4 border-t border-white/10">
+                        {{ $products->links() }}
+                    </div>
 
             {{-- Modal Tambah ke Keranjang --}}
             <div x-show="openModal"
@@ -249,8 +250,6 @@
                     </div>
                 </div>
             @endif
-
-
         </div>
     </div>
 </x-app-layout>
