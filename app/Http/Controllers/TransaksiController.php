@@ -135,16 +135,22 @@ class TransaksiController extends Controller
         ]);
     }
 
-    public function tandaiSelesai($id)
+    public function updateStatusSelesai($id)
     {
+        $user = Auth::user();
+
         $transaksi = Transaksi::where('id', $id)
-            ->where('user_id', Auth::id()) // pastikan hanya user yang punya transaksi ini bisa ubah
+            ->when($user->role !== 'admin', function ($query) use ($user) {
+                // Jika bukan admin, hanya boleh ubah transaksi miliknya yang statusnya 'dikirim'
+                $query->where('user_id', $user->id);
+            })
             ->where('status', 'dikirim')
             ->firstOrFail();
 
         $transaksi->status = 'selesai';
         $transaksi->save();
 
-        return redirect()->route('dashboard')->with('success', 'Transaksi berhasil ditandai sebagai selesai.');
+        return redirect()->route($user->role === 'admin' ? 'adminPesanan.index' : 'dashboard')
+            ->with('success', 'Transaksi berhasil ditandai sebagai selesai.');
     }
 }

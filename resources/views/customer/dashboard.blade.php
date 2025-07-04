@@ -10,8 +10,7 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
                     <h3 class="text-2xl font-semibold">Selamat Datang, {{ Auth::user()->name }}!</h3>
-                    <p class="mt-2 text-gray-600">Terima kasih telah berbelanja di A3 KOI Farm. Jelajahi koleksi ikan koi
-                        terbaik kami.</p>
+                    <p class="mt-2 text-gray-600">Terima kasih telah berbelanja di A3 KOI Farm. Jelajahi koleksi ikan koi terbaik kami.</p>
 
                     <div class="mt-6">
                         <a href="{{ route('product.listproduct') }}"
@@ -25,44 +24,59 @@
 
         {{-- Transaksi Aktif --}}
         @if ($transaksis->isNotEmpty())
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <h3 class="text-xl font-semibold mb-4 text-white text-center mt-5">----------------  Transaksi Aktif Anda  ----------------</h3>
-                <div class="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-1 space-y-4">
-                    @foreach ($transaksis as $trx)
-                        <div class="bg-white rounded-xl shadow-lg p-4 border border-gray-200 hover:bg-opacity-30/2 hover:scale-105 shadow-lg rounded-lg transition duration-300 ease-in-out 
-                                   transform hover:-translate-y-1 hover:shadow-xl">
-                            <div class="p-1 flex justify-between items-center">
-                                <div class="text-gray-900">
-                                    <h4 class="text-lg font-bold mb-1">{{ $trx->produk->nama_produk ?? '-' }}</h4>
-                                    <p class="text-sm text-gray-600 mb-2">Kode: <span
-                                            class="font-mono">{{ $trx->kode_produk }}</span>
-                                    </p>
-                                </div>
-                                <div class="text-gray-900">
-                                    <span
-                                        class="inline-block px-2 py-1 rounded-full text-xs font-medium text-left
-                                    {{ $trx->status === 'menunggu pengiriman' ? 'bg-yellow-200 text-yellow-800' : 'bg-blue-200 text-blue-800' }}">
-                                        {{ ucfirst($trx->status) }}
-                                    </span>
+            @php
+                $totalAktif = $transaksis->count();
+                $menunggu = $transaksis->where('status', 'menunggu pengiriman')->count();
+                $dikirim = $transaksis->where('status', 'dikirim')->count();
+            @endphp
 
-                                    @if ($trx->status === 'dikirim')
-                                        <form action="{{ route('transaksi.selesai', $trx->id) }}" method="POST"
-                                            class="mt-4">
-                                            @csrf
-                                            @method('PATCH')
-                                            <button type="submit"
-                                                class="w-full bg-green-600 hover:bg-green-700 text-white py-2 px-2 rounded-md text-sm font-semibold transition-colors"
-                                                onclick="return confirm('Yakin ingin menandai sebagai selesai?')">
-                                                Tandai Selesai
-                                            </button>
-                                        </form>
-                                    @endif
-                                </div>
-                            </div>
-                        </div>
-                    @endforeach
-                </div>
+            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 mt-5">
+                <button onclick="document.getElementById('modalList').classList.remove('hidden')"
+                    class="bg-white text-blue-700 w-full px-6 py-4 rounded-lg shadow-md hover:bg-blue-50 font-semibold">
+                    <div class="flex justify-between items-center">
+                        🛒 {{ $totalAktif }} Pesanan Anda
+                        <span class="text-sm text-gray-600">
+                            ({{ $menunggu }} menunggu pengiriman, {{ $dikirim }} dikirim)
+                        </span>
+                        <p class="ml-2">&gt;</p>
+                    </div>
+                </button>
             </div>
         @endif
+    </div>
+
+    {{-- Modal List Transaksi Aktif --}}
+    <div id="modalList" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white w-full max-w-2xl p-6 rounded-lg shadow-lg overflow-y-auto max-h-[80vh] relative">
+            <h3 class="text-lg font-semibold mb-4">Daftar Transaksi Aktif</h3>
+            <button onclick="document.getElementById('modalList').classList.add('hidden')"
+                class="absolute top-3 right-4 text-gray-600 hover:text-red-500 text-2xl">&times;</button>
+
+            @foreach ($transaksis as $trx)
+                <div class="w-full border-b border-gray-200 py-3 px-3 flex justify-between items-center hover:bg-gray-100 transition rounded">
+                    <div>
+                        <h4 class="text-md font-bold">{{ $trx->produk->nama_produk ?? '-' }}</h4>
+                        <p class="text-sm text-gray-500">Kode: {{ $trx->kode_produk }}</p>
+                        <p class="text-sm">Jumlah: {{ $trx->qty }} | Total: Rp {{ number_format($trx->total_harga) }}</p>
+                        <p class="text-sm text-gray-600">Status: 
+                            <span class="{{ $trx->status === 'menunggu pengiriman' ? 'text-yellow-700' : 'text-blue-700' }}">
+                                {{ ucfirst($trx->status) }}
+                            </span>
+                        </p>
+                    </div>
+
+                    @if ($trx->status === 'dikirim')
+                        <form action="{{ route('transaksi.selesai', $trx->id) }}" method="POST" class="ml-4">
+                            @csrf
+                            @method('PATCH')
+                            <button type="submit" onclick="return confirm('Yakin ingin menandai sebagai selesai?')"
+                                class="bg-green-600 hover:bg-green-700 text-white py-1 px-3 rounded-md text-sm">
+                                Tandai Selesai
+                            </button>
+                        </form>
+                    @endif
+                </div>
+            @endforeach
+        </div>
     </div>
 </x-app-layout>

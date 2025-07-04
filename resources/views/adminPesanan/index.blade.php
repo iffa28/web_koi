@@ -103,47 +103,48 @@
                                         {{ $order->no_hp ?? '-' }}
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium space-y-2">
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium space-y-2">
                                         {{-- Tombol Batalkan --}}
-                                        @if ($order->status === 'menunggu pengiriman' || $order->status === 'belum dibayar')
+                                        @if ($order->status === 'menunggu pengiriman')
                                             <button
                                                 @click="updateStatusModalOpen = true;
-                                                    modalTitle = 'Batalkan Pesanan';
-                                                    modalMessage = 'Apakah kamu yakin ingin membatalkan pesanan ini?';
-                                                    formAction = '{{ route('adminPesanan.batalkanStatus', $order->id) }}';
-                                                    newStatus = 'dibatalkan';"
+                modalTitle = 'Batalkan Pesanan';
+                modalMessage = 'Apakah kamu yakin ingin membatalkan pesanan ini?';
+                formAction = '{{ route('adminPesanan.batalkanStatus', $order->id) }}';
+                newStatus = 'dibatalkan';"
                                                 class="text-white bg-red-600 hover:bg-red-700 px-3 py-1 rounded-md text-xs">
                                                 Batalkan
                                             </button>
-                                        @elseif ($order->status === 'dikirim')
-                                            <button disabled
-                                                class="text-gray-500 font-bold py-1 px-4 rounded cursor-not-allowed">
+                                        @endif
+
+                                        {{-- Tombol Selesaikan - hanya muncul jika status 'dikirim' --}}
+                                        @if ($order->status === 'dikirim')
+                                            <button
+                                                @click="updateStatusModalOpen = true;
+                modalTitle = 'Selesaikan Transaksi';
+                modalMessage = 'Apakah kamu yakin ingin menyelesaikan pesanan ini?';
+                formAction = '{{ route('adminPesanan.selesai', $order->id) }}';
+                newStatus = 'selesai';"
+                                                class="text-white bg-green-600 hover:bg-green-700 px-3 py-1 rounded-md text-xs">
                                                 Selesaikan
-                                            </button>
-                                        @else
-                                            <button disabled
-                                                class="text-gray-500 font-bold py-1 px-4 rounded cursor-not-allowed">
-                                                -
                                             </button>
                                         @endif
 
-
+                                        {{-- Tombol Kirim - hanya muncul jika status menunggu pengiriman --}}
                                         @if ($order->status === 'menunggu pengiriman')
                                             <button
                                                 @click="openResiModal('{{ route('delivery.store') }}', '{{ $order->id }}')"
-                                                class="text-white bg-green-600 hover:bg-green-700 px-3 py-1 rounded-md text-xs">
+                                                class="text-white bg-blue-600 hover:bg-blue-700 px-3 py-1 rounded-md text-xs">
                                                 Kirim
                                             </button>
-                                        @elseif ($order->status === 'belum dibayar')
-                                            <button disabled
-                                                class="text-gray-500 font-bold py-1 px-4 rounded cursor-not-allowed">
-                                                Menunggu dibayar
-                                            </button>
-                                        @else
-                                            <button disabled
-                                                class="text-gray-500 font-bold py-1 px-4 rounded cursor-not-allowed">
-
-                                            </button>
                                         @endif
+
+                                        {{-- Jika belum dibayar --}}
+                                        @if ($order->status === 'belum dibayar')
+                                            <span class="text-gray-400 italic text-xs">Menunggu dibayar</span>
+                                        @endif
+                                    </td>
+
                                     </td>
                                 </tr>
                             @empty

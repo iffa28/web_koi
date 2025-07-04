@@ -25,24 +25,24 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    
+
     Route::get('/produk/{kode_produk}/gambar', [ProductController::class, 'showImage'])->name('product.image');
 
     Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
     Route::post('/transaction', [TransaksiController::class, 'store'])->name('transaksi.store');
     Route::delete('/cart/{transaksi}', [TransaksiController::class, 'destroy'])->name('transaksi.destroy');
-    
+
 
     Route::get('/listproduct', [ProductController::class, 'listproduct'])->name('product.listproduct');
     Route::post('/listproduct/savetransaksi', [TransaksiController::class, 'storeTransaksi'])->name('transaksi.storeTransaksi');
 
 
 
-    Route::patch('/transaksi/{id}/selesai', [TransaksiController::class, 'tandaiSelesai'])->name('transaksi.selesai');
+    Route::patch('/transaksi/{id}/selesai', [TransaksiController::class, 'updateStatusSelesai'])->name('transaksi.selesai');
     Route::get('/dashboard/detail/{id}', [TransaksiController::class, 'detailTransaksiAktif'])->name('transaksi.detail');
 
 
-    
+
 
     Route::get('/history', [TransaksiController::class, 'semuaTransaksi'])->name('history.index');
 
@@ -67,6 +67,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/adminPesanan', [AdminPesananController::class, 'index'])->name('adminPesanan.index');
     Route::post('/adminPesanan/sentdelivery', [DeliveryController::class, 'store'])->name('delivery.store');
     Route::patch('/adminPesanan/{id}/batalkanpesanan', [AdminPesananController::class, 'batalkanStatus'])->name('adminPesanan.batalkanStatus');
+    Route::patch('/adminPesanan/{id}/selesai', [TransaksiController::class, 'updateStatusSelesai'])->name('adminPesanan.selesai');
 
     Route::get('/adminTransaksi', [AdminTransaksiController::class, 'index'])->name('adminTransaksi.index');
     Route::get('/adminTransaksi/{id}/bukti_transaksi', [AdminTransaksiController::class, 'showImage'])->name('adminTransaksi.image');

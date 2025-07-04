@@ -30,7 +30,7 @@ class AdminPesananController extends Controller
 
         $order = Transaksi::findOrFail($id);
 
-        if (!in_array($order->status, ['menunggu pengiriman', 'belum dibayar'])) {
+        if (!in_array($order->status, ['menunggu pengiriman'])) {
         return redirect()->back()->with('error', 'Pesanan hanya dapat dibatalkan jika statusnya menunggu pengiriman atau belum dibayar.');
         }
         $order->status = 'dibatalkan';
